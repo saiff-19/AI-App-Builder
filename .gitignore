@@ -1,0 +1,17 @@
+# Virtual environment
+myenv1/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+
+#mp4
+*.mp4
