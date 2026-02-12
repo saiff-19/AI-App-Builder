@@ -50,14 +50,18 @@ requirements.txt
 
 ### 1️⃣ Clone the repository
 
-````bash
+###
+
+```bash
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
+```
 
 ### 2️⃣ Install dependencies
 
 ```bash
 pip install -r requirements.txt
+```
 
 ### 3️⃣ Setup Environment Variables
 
@@ -65,7 +69,7 @@ Create a .env file in the root directory:
 GROQ_API_KEY=your_api_key_here
 
 ### 4️⃣ Run the application
+
 python main.py
 
 ---
-````
