@@ -86,17 +86,21 @@ async def get_file_content(path: str):
 app.mount("/preview", StaticFiles(directory=PROJECT_ROOT, html=True), name="preview")
 
 # Mount frontend assets
-app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
+ASSETS_PATH = Path("frontend/dist/assets")
+if ASSETS_PATH.exists():
+    app.mount("/assets", StaticFiles(directory=str(ASSETS_PATH)), name="assets")
 
 # Serve SPA for any other route
 @app.get("/{full_path:path}")
 async def serve_spa(full_path: str):
-    # If the path starts with api/ or preview/, return 404 (should be handled by other routes if explicit, 
-    # but here we catch leftovers. Actually, mounted routes should capture their prefixes)
     if full_path.startswith("api/") or full_path.startswith("preview/"):
         raise HTTPException(status_code=404, detail="Not Found")
-        
-    return FileResponse("frontend/dist/index.html")
+    
+    SPA_PATH = Path("frontend/dist/index.html")
+    if SPA_PATH.exists():
+        return FileResponse(str(SPA_PATH))
+    
+    return {"message": "Frontend not built yet. Please run 'npm run build' in the frontend directory."}
 
 if __name__ == "__main__":
     import uvicorn
