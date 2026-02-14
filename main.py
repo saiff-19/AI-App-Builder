@@ -55,6 +55,10 @@ async def list_files():
             files.append(str(path.relative_to(PROJECT_ROOT)).replace("\\", "/"))
     return {"files": files}
 
+@app.get("/api/health")
+async def healthcheck():
+    return {"status": "ok"}
+
 @app.get("/api/files/content")
 async def get_file_content(path: str):
     # path query param is relative to PROJECT_ROOT
