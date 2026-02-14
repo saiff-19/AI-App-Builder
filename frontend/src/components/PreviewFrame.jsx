@@ -38,7 +38,7 @@ export function PreviewFrame() {
             <iframe 
                 key={key}
                 ref={iframeRef}
-                src="http://localhost:8000/preview/" 
+                src="https://ai-app-builder-aslm.onrender.com/preview/" 
                 className="flex-1 w-full bg-white border-none"
                 title="App Preview"
                 sandbox="allow-scripts allow-same-origin allow-forms"
