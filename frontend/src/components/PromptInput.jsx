@@ -1,16 +1,11 @@
 import { Send, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
-interface PromptInputProps {
-    onSubmit: (prompt: string) => Promise<void>;
-    disabled?: boolean;
-}
-
-export function PromptInput({ onSubmit, disabled }: PromptInputProps) {
+export function PromptInput({ onSubmit, disabled }) {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!prompt.trim() || isLoading || disabled) return;
         
