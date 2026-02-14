@@ -7,7 +7,7 @@ import { LoginPage } from './components/LoginPage';
 import { Code, Eye, FileText, RefreshCw, LogOut, Terminal } from 'lucide-react';
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = 'https://ai-app-builder-aslm.onrender.com/api';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
