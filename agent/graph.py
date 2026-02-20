@@ -5,15 +5,13 @@ from agent.prompts import *
 from langgraph.graph import StateGraph,START,END
 from langgraph.constants import END 
 from agent.tools import *
-from langchain.agents import create_agent
+from langgraph.prebuilt import create_react_agent
 
 load_dotenv()
 model = ChatGroq(
     model="openai/gpt-oss-120b",
     temperature=0.3
 )
-
-
 
 def planner_agent(state: dict) -> dict:
     user_Prompt = state['user_Prompt']
@@ -54,11 +52,14 @@ def coder_agent(state: dict) -> dict:
     )
 
     coder_tools = [read_file, write_file, list_files, get_current_directory]
-    react_agent = create_agent(model, coder_tools)
+    # In some versions of langgraph, state_modifier is not supported in create_react_agent
+    react_agent = create_react_agent(model, coder_tools)
 
-    react_agent.invoke({"messages": [{"role": "system", "content": system_prompt},
-                                     {"role": "user", "content": user_prompt}]})
-
+    response = react_agent.invoke({"messages": [
+        ("system", system_prompt),
+        ("user", user_prompt)
+    ]})
+    print(response)
     coder_state.current_step_idx += 1
     return {"coder_state": coder_state}
 

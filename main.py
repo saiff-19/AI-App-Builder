@@ -33,17 +33,43 @@ PROJECT_ROOT.mkdir(exist_ok=True)
 class GenerateRequest(BaseModel):
     prompt: str
 
-@app.post("/api/generate")
-async def generate_app(request: GenerateRequest):
+from fastapi import BackgroundTasks
+
+# Global state to track generation status
+# In a real production app, this should be a database or Redis
+GENERATE_STATUS = {
+    "is_generating": False,
+    "current_prompt": ""
+}
+
+def run_agent_task(prompt: str):
+    global GENERATE_STATUS
+    GENERATE_STATUS["is_generating"] = True
+    GENERATE_STATUS["current_prompt"] = prompt
+    print(f"Starting generation for: {prompt}")
     try:
         # Run the agent
         # The agent expects {"user_Prompt": ...} based on graph.py
-        result = agent.invoke({"user_Prompt": request.prompt}, {"recursion_limit": 100})
-        # The agent writes files to PROJECT_ROOT via tools.
-        return {"status": "success", "result": str(result)}
+        result = agent.invoke({"user_Prompt": prompt}, {"recursion_limit": 100})
+        print(f"Generation complete: {result}")
     except Exception as e:
-        traceback.print_exc() 
-        raise HTTPException(status_code=500, detail=str(e))
+        traceback.print_exc()
+        print(f"Generation failed: {e}")
+    finally:
+        GENERATE_STATUS["is_generating"] = False
+        GENERATE_STATUS["current_prompt"] = ""
+
+@app.post("/api/generate")
+async def generate_app(request: GenerateRequest, background_tasks: BackgroundTasks):
+    if GENERATE_STATUS["is_generating"]:
+        return {"status": "error", "message": "Already generating"}
+
+    background_tasks.add_task(run_agent_task, request.prompt)
+    return {"status": "started"}
+
+@app.get("/api/status")
+async def get_status():
+    return GENERATE_STATUS
 
 @app.get("/api/files")
 async def list_files():
