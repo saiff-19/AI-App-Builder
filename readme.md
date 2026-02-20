@@ -1,4 +1,4 @@
-# 🚀 Agentic AI Project (FastAPI + LangGraph + Groq)
+# 🚀 AI App Builder
 
 An AI-powered agent system built using **FastAPI**, **LangChain**, and **LangGraph**, capable of structured reasoning and tool-based execution.
 
