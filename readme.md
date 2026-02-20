@@ -53,8 +53,8 @@ requirements.txt
 ###
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/saiff-19/AI-App-Builder.git
+cd AI-App-Builder
 ```
 
 ### 2️⃣ Install dependencies
